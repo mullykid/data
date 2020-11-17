@@ -68,6 +68,26 @@ export async function initApplicationContext(configWrapper: any = new ConfigHelp
 
     }); 
 
+    app.get('/api/teams', function(req, res) {
+        let league = req.query.league ? req.query.league : ""
+        let year = req.query.year ? req.query.year : 2020 //TO DO get current year
+        if (league === ""){  
+             "League not provided in API call"
+        }
+        let options: Options = {
+            mode: 'json',
+            scriptPath: path,
+            args: [league.toString(), year.toString()]
+        };
+
+        console.log('Running for %j %s', league, year);
+        
+        PythonShell.run('get_teams.py', options, function (err, results) {
+            handleResult(err, res, results)
+        });
+
+    }); 
+
     let port = configWrapper.getConfigValue("express.port", 80)
     
     app.listen(port, () => console.log('Application listening on port ' + port))
