@@ -12,7 +12,6 @@ player = sys.argv[1]
 async def main(player: str):
     async with aiohttp.ClientSession() as session:
         understat = Understat(session)         
-        print(player)
         data = await understat.get_player_grouped_stats(player)
 
         print(json.dumps(data))

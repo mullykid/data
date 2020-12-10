@@ -14,7 +14,7 @@ year = sys.argv[2]
 async def main(league: str, year: str):
     async with aiohttp.ClientSession() as session:
         understat = Understat(session)         
-        data = await understat.get_teams(league,year)
+        data = await understat.get_teams(league,year),
 
         print(json.dumps(data))
 
