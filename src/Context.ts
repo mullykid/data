@@ -98,7 +98,7 @@ export async function initApplicationContext(configWrapper: any = new ConfigHelp
     }); 
 
     app.get('/api/teams', function(req, res) {
-        let league = req.query.league ? req.query.league : ""
+        let league = req.query.league ? req.query.league : "EPL"
         let year = req.query.year ? req.query.year : getCurrentYear()  // returns the current year //TO DO get current year
         if (league === ""){  
              "League not provided in API call"
