@@ -71,7 +71,60 @@ export async function initApplicationContext(configWrapper: any = new ConfigHelp
         
         console.log('Running for player %j', playerID);
         
-        PythonShell.run('get_league_player_stats.py', options, function (err, results) {
+        PythonShell.run('get_player_grouped_stats.py', options, function (err, results) {
+            handleResult(err, res, results)
+        });
+
+    });
+
+    app.get('/api/player_shots', function(req, res) {
+        console.log(req.query.playerid)
+        console.log(req.query.season)
+        let playerId = req.query.playerid ? req.query.playerid.toString() : ""
+        let season = req.query.season ? req.query.season.toString() : ""
+        if (playerId === ""){
+            throw "PlayerID not provided in API call"
+        }
+
+        if (season === ""){
+            throw "Season not provided in API call"
+        }
+
+        let options: Options = {
+            mode: 'json',
+            scriptPath: path,
+            args: [playerId, season] as any
+        };
+        
+        console.log('Running for player %j %s', playerId, season);
+        
+        PythonShell.run('get_league_player_shots.py', options, function (err, results) {
+            handleResult(err, res, results)
+        });
+
+    });
+
+    app.get('/api/player_matches', function(req, res) {
+        let playerId = req.query.playerid ? req.query.playerid.toString() : ""
+        let season = req.query.season ? req.query.season.toString() : ""
+
+        if (playerId === ""){
+            throw "PlayerID not provided in API call"
+        }
+
+        if (season === ""){
+            throw "Season not provided in API call"
+        }
+
+        let options: Options = {
+            mode: 'json',
+            scriptPath: path,
+            args: [playerId, season] as any
+        };
+        
+        console.log('Running for player %j %s', playerId, season);
+        
+        PythonShell.run('get_league_player_matches.py', options, function (err, results) {
             handleResult(err, res, results)
         });
 
